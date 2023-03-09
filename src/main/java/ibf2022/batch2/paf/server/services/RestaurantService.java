@@ -32,12 +32,13 @@ public class RestaurantService {
 
 	// TODO: Task 4 
 	// Do not change the method's signature
-	public Optional<Restaurant> getRestaurantById(String restaurantId) {
-		return restRepo.getRestaurantById(restaurantId);
-	}
+	public Restaurant getRestaurantById(String id) {
+        return restRepo.getRestaurantById(id);
+    }
 
 	// TODO: Task 5 
 	// Do not change the method's signature
 	public void postRestaurantComment(Comment comment) {
+		restRepo.insertRestaurantComment(comment);
 	}
 }

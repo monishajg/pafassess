@@ -1,5 +1,6 @@
 package ibf2022.batch2.paf.server.controllers;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,12 +9,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ibf2022.batch2.paf.server.services.RestaurantService;
+import ibf2022.batch2.paf.server.models.Comment;
 import ibf2022.batch2.paf.server.models.Restaurant;
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,51 +45,30 @@ public class RestaurantController {
 		}
 
 	// TODO: Task 4 - request handler
-	@GetMapping(path = "/restaurant/{restaurantId}")
-	public ResponseEntity<Optional<Restaurant>> getRestaurant(@PathVariable String restaurantId) {
-		log.info(">>> Requesting restaurant document...");
-		return ResponseEntity.ok().body(restSvc.getRestaurantById(restaurantId));
+	@GetMapping("/restaurant/{restaurantId}")
+	public ResponseEntity<Restaurant> getRestaurantById(@PathVariable String restaurantId) {
+		Restaurant restaurant = restSvc.getRestaurantById(restaurantId);
+		System.out.println(restaurant);
+
+		if (restaurant == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
+            return new ResponseEntity<>(restaurant, HttpStatus.OK);
+        }
 	}
 
-
 	// TODO: Task 5 - request handler
-	// @PostMapping(path = "/restaurant/comment")
-	// public 
-	
-	
-	
-	// public ResponseEntity<String> insertGameReview(@Valid Review review, BindingResult result,
-    //         HttpServletResponse response, Model model) {
+	@PostMapping(path = "/restaurant/comment")
+	public void postComment(@RequestBody MultiValueMap<String, String> form) {
+		Date d = new java.util.Date();
+		long epoch = d.getTime();
+		Comment c = new Comment();
+		c.setName(form.getFirst("name"));
+		c.setRating(Integer.parseInt(form.getFirst("rating")));
+		c.setComment(form.getFirst("comment"));
+		c.setRestaurantId(form.getFirst("restaurantId"));
+		c.setDate(epoch);
 
-    //     if (!(gameRepo.checkGameId(review.getGid()))) { // checkGameId from Gamerepo
-    //         FieldError fieldErr = new FieldError("Review", FIELD_GAME_ID, "Game Id does not exists");
-    //         result.addError(fieldErr);
-    //     }
-
-    //     if (result.hasErrors()) {
-    //         List<FieldError> listOfErr = result.getFieldErrors();
-    //         JsonObjectBuilder job = Json.createObjectBuilder();
-    //         listOfErr.stream()
-    //                 .forEach(x -> {
-    //                     job.add(x.getField(), x.getDefaultMessage());
-    //                 });
-
-    //         return ResponseEntity.badRequest().body(job.build().toString());
-    //     }
-
-    //     Optional<Document> opt = gameService.getGameName(review.getGid());
-
-    //     review.setPosted(new Date());
-    //     String name = opt.get().getString("name");
-    //     review.setName(name);
-
-    //     Document doc = gameService.insertComment(review); // from GameService l57
-    //     doc.replace("posted", doc.getDate("posted").toString());
-    //     doc.remove("_id");
-    //     // doc.replace("_id", doc.getObjectId("_id").toString());
-
-    //     return ResponseEntity
-    //             .ok()
-    //             .body(doc.toJson());
-
+		restSvc.postRestaurantComment(c);
+	} 
 }
