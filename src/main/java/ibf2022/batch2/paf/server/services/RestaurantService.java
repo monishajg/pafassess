@@ -32,8 +32,8 @@ public class RestaurantService {
 
 	// TODO: Task 4 
 	// Do not change the method's signature
-	public Optional<Restaurant> getRestaurantById(String id) {
-		return restRepo.getRestaurantById(id);
+	public Optional<Restaurant> getRestaurantById(String restaurantId) {
+		return restRepo.getRestaurantById(restaurantId);
 	}
 
 	// TODO: Task 5 

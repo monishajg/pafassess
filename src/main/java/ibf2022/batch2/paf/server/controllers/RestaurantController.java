@@ -8,13 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ibf2022.batch2.paf.server.repositories.RestaurantRepository;
 import ibf2022.batch2.paf.server.services.RestaurantService;
 import ibf2022.batch2.paf.server.models.Restaurant;
 import lombok.extern.slf4j.Slf4j;
@@ -28,23 +26,24 @@ public class RestaurantController {
 	private RestaurantService restSvc;
 	
 	// TODO: Task 2 - request handler
-	@GetMapping(path = "/cuisines")
+	@GetMapping(path = "/cuisines", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<String>> getCuisines() {
         log.info(">>> Requesting list of cuisines...");
         return ResponseEntity.ok().body(restSvc.getCuisines());
         }
     
     // TODO: Task 3 - request handler
-	@GetMapping(path = "/restaurants/{cuisine}")
+	@GetMapping(path = "/restaurants/{cuisine}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Restaurant>> getRestaurants(@PathVariable String cuisine) {
 		log.info(">>> Requesting list of restaurants...");
 		return ResponseEntity.ok().body(restSvc.getRestaurantsByCuisine(cuisine));
 		}
 
 	// TODO: Task 4 - request handler
-	// @GetMapping(path = "/restaurant/{restaurantId}")
-	public ResponseEntity<Optional<Restaurant>> getRestaurant(String restaurantId) {
-	return null;
+	@GetMapping(path = "/restaurant/{restaurantId}")
+	public ResponseEntity<Optional<Restaurant>> getRestaurant(@PathVariable String restaurantId) {
+		log.info(">>> Requesting restaurant document...");
+		return ResponseEntity.ok().body(restSvc.getRestaurantById(restaurantId));
 	}
 
 

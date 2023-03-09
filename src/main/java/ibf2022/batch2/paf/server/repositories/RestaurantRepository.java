@@ -51,9 +51,9 @@ public class RestaurantRepository implements Constants {
 	// Do not change the method's signature
 	// Write the MongoDB query for this method in the comments below
 	// 
-	public Optional<Restaurant> getRestaurantById(String id) {
+	public Optional<Restaurant> getRestaurantById(String restaurantId) {
         Query query = new Query();
-        query = query.addCriteria(Criteria.where("_id").is(id));
+        query = query.addCriteria(Criteria.where("restaurantId").is(restaurantId));
         Restaurant restaurant = template.findOne(query, Restaurant.class, COLLECTION_DINER);
         return Optional.ofNullable(restaurant);
     }
