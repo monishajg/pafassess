@@ -1,12 +1,30 @@
 package ibf2022.batch2.paf.server.models;
 
+import jakarta.annotation.Nonnull;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 // Do not change this file
 public class Comment {
 
+	@NotNull
 	private String restaurantId;
+	
+	@Size(min = 4, message = "Input must be longer than 3 characters")
+	@NotNull
 	private String name;
+	
+	
 	private long date = 0l;
+	
+	@NotNull
 	private String comment;
+	
+	@Min(value=1)
+	@Max(value=5)
+	@NotNull
 	private int rating;
 
 	public void setRestaurantId(String restaurantId) { this.restaurantId = restaurantId; }

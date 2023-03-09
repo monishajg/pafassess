@@ -1,4 +1,4 @@
-package ibf2022.batch2.paf.utils;
+package ibf2022.batch2.paf.server.utils;
 
 // import org.bson.Document;
 
@@ -13,6 +13,8 @@ package ibf2022.batch2.paf.utils;
 
 // JSON, Document objects creation using constants
 public class Utils implements Constants {
+    
+    
     // public static Account create(Document doc) {
     //     Account acc = new Account();
     //     acc.setAccount_id(doc.getString(FIELD_ACCOUNT_ID));
